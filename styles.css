@@ -1,0 +1,36 @@
+body {
+    text-align: center;
+}
+h1 {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #2f1b84;
+}
+form {
+    padding: 30px;
+    display: inline-block;
+    font-size: 25px;
+    color: white;
+    background-color: #2f1b84;
+    margin: 20px;
+}
+input {
+    border: none;
+    padding: 10px;
+    margin-left: 10px;
+    width: 300px;
+    height: 40px;
+    font-size: inherit;
+}
+.user {
+    border: 2px solid #2f1b84;
+    display: inline-block;
+    margin: 10px;
+    padding: 10px;
+}
+a {
+    padding: 10px;
+    color: black;
+    font-size: 18px;
+    text-decoration: none;
+}
