@@ -3,7 +3,8 @@ class App extends React.Component {
         super();
         this.state = {
             searchText: '',
-            users: []
+            users: [],
+            error: ''
         };
     }
   
@@ -17,7 +18,9 @@ class App extends React.Component {
         const url = `https://api.github.com/search/users?q=${searchText}`;
         fetch(url)
             .then(response => response.json())
-            .then(responseJson => this.setState({users: responseJson.items}));
+            .then(responseJson => {
+                (responseJson.items.length > 0) ? this.setState({users: responseJson.items, error: ''}) : this.setState({users: [], error: "no user with such name found"})
+            });
     }
   
     render() {
@@ -34,6 +37,9 @@ class App extends React.Component {
                         onChange={event => this.onChangeHandle(event)}
                         value={this.state.searchText}/>
                 </form>
+                {
+                    this.state.error ? <p>{this.state.error}</p> : null
+                }
                 <UsersList users={this.state.users}/>
             </div>
         );
