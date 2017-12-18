@@ -1,6 +1,8 @@
-'use strict';
+"use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -22,7 +24,8 @@ var App = function (_React$Component) {
                 minutes: 0,
                 seconds: 0,
                 miliseconds: 0
-            }
+            },
+            results: []
         };
         return _this;
     }
@@ -30,14 +33,14 @@ var App = function (_React$Component) {
 
 
     _createClass(App, [{
-        key: 'format',
+        key: "format",
         value: function format(times) {
-            return pad0(times.minutes) + ':' + pad0(times.seconds) + ':' + pad0(Math.floor(times.miliseconds));
+            return pad0(times.minutes) + ":" + pad0(times.seconds) + ":" + pad0(Math.floor(times.miliseconds));
         }
         //Funkcje uruchamiająca stoper
 
     }, {
-        key: 'start',
+        key: "start",
         value: function start() {
             var _this2 = this;
 
@@ -51,7 +54,7 @@ var App = function (_React$Component) {
             }
         }
     }, {
-        key: 'step',
+        key: "step",
         value: function step() {
             if (!this.state.running) return;
             this.calculate();
@@ -64,7 +67,7 @@ var App = function (_React$Component) {
             });
         }
     }, {
-        key: 'calculate',
+        key: "calculate",
         value: function calculate() {
             this.state.times.miliseconds += 1;
             if (this.state.times.miliseconds >= 100) {
@@ -79,7 +82,7 @@ var App = function (_React$Component) {
         //Funkcja zatrzymująca stoper
 
     }, {
-        key: 'stop',
+        key: "stop",
         value: function stop() {
             this.setState({
                 running: false
@@ -89,7 +92,7 @@ var App = function (_React$Component) {
         //Funkcja resetująca stoper
 
     }, {
-        key: 'reset',
+        key: "reset",
         value: function reset() {
             this.setState({
                 times: {
@@ -102,69 +105,84 @@ var App = function (_React$Component) {
         //Funkcja zapisująca czas na tablicy wyników
 
     }, {
-        key: 'save',
+        key: "save",
         value: function save() {
-            var $newTime = $('<li>').text(this.format(this.state.times));
-            $('.results').append($newTime);
+            this.setState({
+                results: [].concat(_toConsumableArray(this.state.results), [this.state.times])
+            });
         }
         //Funkcja resetująca tablicę wyników
 
     }, {
-        key: 'clear',
+        key: "clear",
         value: function clear() {
-            $('.results').text("");
+            this.setState({
+                results: []
+            });
         }
     }, {
-        key: 'render',
+        key: "render",
         value: function render() {
+            var _this3 = this;
+
             return React.createElement(
-                'div',
+                "div",
                 null,
                 React.createElement(
-                    'nav',
-                    { className: 'controls' },
+                    "nav",
+                    { className: "controls" },
                     React.createElement(
-                        'h1',
+                        "h1",
                         null,
-                        'STOPWATCH'
+                        "STOPWATCH"
                     ),
                     React.createElement(
-                        'a',
-                        { href: '#', id: 'start', onClick: this.start.bind(this) },
-                        'Start'
+                        "a",
+                        { href: "#", id: "start", onClick: this.start.bind(this) },
+                        "Start"
                     ),
                     React.createElement(
-                        'a',
-                        { href: '#', id: 'stop', onClick: this.stop.bind(this) },
-                        'Stop'
+                        "a",
+                        { href: "#", id: "stop", onClick: this.stop.bind(this) },
+                        "Stop"
                     ),
                     React.createElement(
-                        'a',
-                        { href: '#', id: 'reset', onClick: this.reset.bind(this) },
-                        'Reset'
+                        "a",
+                        { href: "#", id: "reset", onClick: this.reset.bind(this) },
+                        "Reset"
                     ),
                     React.createElement(
-                        'a',
-                        { href: '#', id: 'save', onClick: this.save.bind(this) },
-                        'Save'
+                        "a",
+                        { href: "#", id: "save", onClick: this.save.bind(this) },
+                        "Save"
                     ),
                     React.createElement(
-                        'a',
-                        { href: '#', id: 'clear', onClick: this.clear.bind(this) },
-                        'Clear board'
+                        "a",
+                        { href: "#", id: "clear", onClick: this.clear.bind(this) },
+                        "Clear board"
                     )
                 ),
                 React.createElement(
-                    'div',
-                    { className: 'stopwatch' },
+                    "div",
+                    { className: "stopwatch" },
                     this.format(this.state.times)
                 ),
                 React.createElement(
-                    'h2',
+                    "h2",
                     null,
-                    'Your times list:'
+                    "Your times list:"
                 ),
-                React.createElement('ul', { className: 'results' })
+                React.createElement(
+                    "ul",
+                    { className: "results" },
+                    this.state.results.map(function (singleResult) {
+                        return React.createElement(
+                            "li",
+                            { key: randomString() },
+                            _this3.format(singleResult)
+                        );
+                    })
+                )
             );
         }
     }]);
@@ -181,6 +199,15 @@ function pad0(value) {
         result = '0' + result;
     }
     return result;
+}
+//Funkcja generująca losowe id
+function randomString() {
+    var chars = '0123456789abcdefghiklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXTZ';
+    var str = '';
+    for (var i = 0; i < 10; i++) {
+        str += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return str;
 }
 
 ReactDOM.render(React.createElement(App, null), document.getElementById('app'));

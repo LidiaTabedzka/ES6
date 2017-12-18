@@ -7,7 +7,8 @@ class App extends React.Component {
                 minutes: 0,
                 seconds: 0,
                 miliseconds: 0
-            }
+            },
+            results: []
         };
     }
     //Funkcja formatująca czas na minuty, sekundy, minisekundy
@@ -64,12 +65,15 @@ class App extends React.Component {
     }
     //Funkcja zapisująca czas na tablicy wyników
     save() {
-        const $newTime = $('<li>').text(this.format(this.state.times));
-        $('.results').append($newTime); 
+        this.setState({
+            results: [...this.state.results, this.state.times]
+        });
     }
     //Funkcja resetująca tablicę wyników
     clear() {
-        $('.results').text("");
+        this.setState({
+            results: []
+        });
     }
 
     render() {
@@ -85,7 +89,9 @@ class App extends React.Component {
                 </nav>
                 <div className="stopwatch">{this.format(this.state.times)}</div>
                 <h2>Your times list:</h2>
-                <ul className="results"></ul>
+                <ul className="results">
+                    {this.state.results.map(singleResult => <li key={randomString()}>{this.format(singleResult)}</li>)}
+                </ul>
             </div>
         );
     }
@@ -98,6 +104,15 @@ function pad0(value) {
         result = '0' + result;
     }
     return result;
+}
+//Funkcja generująca losowe id
+function randomString() {
+    const chars = '0123456789abcdefghiklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXTZ';
+    let str = '';
+    for (let i = 0; i < 10; i++) {
+        str += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return str;
 }
 
 ReactDOM.render(
